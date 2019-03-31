@@ -1,6 +1,9 @@
+#!/usr/bin/python3
+
 from espeak import espeak
 from motion import Motion
 from vision import Vision
+import logging
 
 def getchar():
    #Returns a single character from standard input
@@ -14,6 +17,9 @@ def getchar():
       termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
    return ch
 
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s\r\n', datefmt='%H:%M:%S')
+
+
 motion = Motion()
 vision = Vision()
 
@@ -22,14 +28,22 @@ vision.start()
 
 while True:
   c = getchar()
-  if c == 'w':
+  if c == 'q':
+    motion.direction([-.7,.7])
+  elif c == 'w':
     motion.forward()
-  elif c == 's':
+  elif c == 'e':
+    motion.direction([.7,.7])
+  elif c == 'x':
     motion.backward()
   elif c == 'a':
     motion.left()
   elif c == 'd':
     motion.right()
+  elif c == 'z':
+    motion.direction([-.7,-.7])
+  elif c == 'c':
+    motion.direction([.7,-.7])
   elif c == 'g':
     espeak.synth("HI GUS GUS")
   elif c == 'h':
@@ -40,9 +54,9 @@ while True:
     espeak.synth("HI AILIS")
   elif c == 'l':
     espeak.synth("HI ARDAN")
-  elif c == ';':
-    espeak.synth("HI SNUGGLES")
-  elif c == 'q':
+  elif c == 'f':
+    espeak.synth("I AM FRED")
+  elif c == '`':
     motion.stop()
     vision.stop()
     quit()
